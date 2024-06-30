@@ -1,0 +1,50 @@
+plugins {
+    id "java"
+    id "org.jetbrains.intellij" version "1.16.0"
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
+    maven { url "https://www.jetbrains.com/intellij-repository/snapshots" }
+}
+
+intellij {
+    version = "2022.2"
+//    version = "2024.1"
+    plugins = ['java']
+//    plugins = ['java', 'org.jetbrains.java.decompiler']
+
+    pluginName = "CodeSpy"
+    updateSinceUntilBuild = false
+}
+
+dependencies {
+//    implementation('com.jetbrains.intellij.java:java-decompiler:241.15989.150') {
+//        transitive = false
+//    }
+    implementation 'com.jetbrains.intellij.java:java-decompiler-engine:241.15989.150'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+//patchPluginXml {
+//    sinceBuild = "222"
+//    untilBuild = "241.*"
+//}
+
+signPlugin {
+    certificateChain = System.getenv("CERTIFICATE_CHAIN")
+    privateKey = System.getenv("PRIVATE_KEY")
+    password = System.getenv("PRIVATE_KEY_PASSWORD")
+}
+
+publishPlugin {
+    token = System.getenv("PUBLISH_TOKEN")
+}

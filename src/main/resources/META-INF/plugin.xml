@@ -1,0 +1,48 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin require-restart="true">
+    <id>com.github.selfancy.plugins.codespy</id>
+    <name>CodeSpy</name>
+    <version>1.0.0</version>
+    <vendor email="mail.mikejoe@qq.com" url="https://github.com/selfancy/codespy">selfancy</vendor>
+    <description><![CDATA[
+        Supports decompiling Java class file to source code file.<br>
+        Built on the Fernflower decompiler engine supported for debugging.<br>
+        Write decompiled file named *-source.jar at the class or jar file location<br>
+    ]]>
+    </description>
+
+    <change-notes><![CDATA[
+      <p>1.0.0</p>
+      Support multiple selections<br>
+      <ul>
+        <li>Java class file</li>
+        <li>Jar archive file</li>
+        <li>Module Library</li>
+      </ul>
+    ]]>
+    </change-notes>
+
+    <idea-version since-build="222.3345.118"/>
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+<!--    <depends>org.jetbrains.java.decompiler</depends>-->
+
+    <resource-bundle>DecompilerBundle</resource-bundle>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="decompiler.extends" displayType="BALLOON" key="decompiler.notification.title"/>
+        <psi.classFileDecompiler implementation="com.selfancy.plugin.decompiler.intellij.IdeaDecompilerExtends" order="first"/>
+        <debugger.positionManagerFactory implementation="com.selfancy.plugin.debug.DebugPositionManagerFactory" order="first"/>
+    </extensions>
+
+    <actions>
+        <action id="DecompilerAction" class="com.selfancy.plugin.action.DecompilerAction" text="Decompile Sources"
+                icon="icons/Decompile.svg"
+                description="Select Jar file or Module Library and click, Decompiled sourceJar at the jar path">
+            <add-to-group group-id="CutCopyPasteGroup" anchor="before" relative-to-action="$Cut"/>
+        </action>
+    </actions>
+</idea-plugin>
